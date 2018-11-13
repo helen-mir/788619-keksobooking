@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Елена Миронова](https://up.htmlacademy.ru/javascript/16/user/788619).
-* Наставник: `Неизвестно`.
+* Наставник: [Артем Черкассов] (https://htmlacademy.ru/profile/id530727).
 
 ---
 
