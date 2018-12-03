@@ -16,6 +16,9 @@ var MAX_Y = 630;
 var MIN_X = 0;
 var MAX_X = 1200;
 
+var PIN_WIDTH = 50;
+var PIN_HEIGHT = 70;
+
 var TITLE_ADS = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -60,20 +63,20 @@ function generateAds() {
 
     ads.push({
       'autor': {
-        'avatar': 'img/avatars/user' + ('0' + i) + '.png';
+        'avatar': 'img/avatars/user' + ('0' + i) + '.png',
       },
       'offer': {
         'title': titleAds[i],
         'address': (locationX + ', ' + locationY),
         'price': getRandomNumber(MIN_PRICE, MAX_PRICE),
         'type': getRandomElement(TYPE_OF_ROOMS),
-        'rooms': getRandomNumber(MIN_GUEST, MAX_GUEST),
-        'guests': shuffleArray(TITLE_ADS);
+        'rooms': getRandomNumber(MIN_ROOMS, MAX_ROOMS),
+        'guests': getRandomNumber(MIN_GUEST, MAX_GUEST),
         'checkin': getRandomElement(TIMES),
         'checkout': getRandomElement(TIMES),
         'features': getArrayLength(ADVANTAGES),
         'description': '',
-        'photos': shuffleArray(PHOTOS)
+        'photos': shuffleArray(PHOTOS) // один и тот же порядок получается в каждом объявлении
       },
       'location': {
         'x': locationX,
@@ -115,15 +118,75 @@ function shuffleArray(array) {
   return array;
 }
 
-//2. У блока .map уберите класс .map--faded.
+// Переводим название типов жилья на русский
+function translateType(type) {
+  switch (type) {
+    case 'flat':
+      return 'Квартира';
+    case 'bungalo':
+      return 'Бунгало';
+    case 'house':
+      return 'Дом';
+    default:
+      return type;
+  }
+}
+
+// У блока .map уберите класс .map--faded.
 
 var sectionMap = document.querySelector('.map');
-sectionMap.classList.remove(map--faded);
+sectionMap.classList.remove('map--faded');
 
+//
+function renderPins(pins) {
+var mapPin = document.querySelector('.map_pins');
 var template = document.querySelector('#pin').content.querySelector('button');
+var fragment = document.createDocumentFragment;
 
+for (var i = 0; i < pins.length; i++) {
+  var mapPinElement = template.cloneNode(true);
+  mapPinElement.style =  'left: ' + ads[i].location.x + 'px; top:'+ ads[i].location.y + 'px;'; //это аообще правильная запись?
+  fragment.appendChild(mapPinElement);
+}
 
-//функция создания DOM-элемента на основе JS-объекта
+mapPin.appendChild(fragment);
+}
 
+//
+var sectionMap = document.querySelector('.map')
+var mapCard = document.createElement('div');
+var afterMapCard = document.querySelector('.map__filters-container');
+mapCard.classList.add('map_card');
+sectionMap.insertBefore(mapCard, afterMapCard);
 
-//функция заполнения блока DOM-элементами на основе массива JS-объектов
+//
+
+function getAds(advertisement) {
+  var offer = advertisement.offer;
+  var autor = advertisement.autor;
+
+  var mapCardPlace = document.querySelector('.map_card');
+  var templateCard = document.querySelector('#card').content.querySelector('article');
+
+  for (var i = 0; i < advertisement.length; i++) {
+    var mapCardElement = templateCard.cloneNode(true);
+    mapCardElement.querySelector('.popup__title').textContent = offer.title;
+    mapCardElement.querySelector('.popup__text--address').textContent = offer.address;
+    mapCardElement.querySelector('.popup__text--price').textContent = offer.price + '₽/ночь';
+    mapCardElement.querySelector('.popup__type').textContent = translateType(offer.type);
+    mapCardElement.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
+    mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
+
+    var features = mapCardElement.querySelector('.popup__features');
+    mapCardElement.removeChild(features);
+    // как мне создать новые актульные удобства?
+
+    mapCardElement.querySelector('.popup__description').textContent = offer.description;
+    mapCardElement.querySelector('.popup__photos');
+    // как вывести все фото и записать в них разные src?
+
+    mapCardPlace.img.src = autor.avatar;
+
+    mapCardPlace.appendChild(mapCardElement);
+  }
+};
