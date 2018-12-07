@@ -1,12 +1,10 @@
 'use strict';
 
-var COUNT_ADS = 8; //количество похожих объявлений неподалеку
-
-var MIN_PRICE = 1000; // минимальная цена в объявлении
-var MAX_PRICE = 1000000; // максимальная цена в объявлении
-
-var MIN_ROOMS = 1; // минимальное количество комнат
-var MAX_ROOMS = 5; // максимальное количество комнат
+var COUNT_ADS = 8;
+var MIN_PRICE = 1000;
+var MAX_PRICE = 1000000;
+var MIN_ROOMS = 1;
+var MAX_ROOMS = 5;
 
 var MIN_GUEST = 1;
 var MAX_GUEST = 15;
@@ -15,9 +13,6 @@ var MIN_Y = 130;
 var MAX_Y = 630;
 var MIN_X = 0;
 var MAX_X = 1200;
-
-var PIN_WIDTH = 50;
-var PIN_HEIGHT = 70;
 
 var TITLE_ADS = [
   'Большая уютная квартира',
@@ -86,11 +81,11 @@ function generateAds() {
   }
 
   return ads;
-}
+};
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-}
+};
 
 function getRandomElement(array) {
   for (var i = 0; i < array.length; i++) {
@@ -98,14 +93,14 @@ function getRandomElement(array) {
   }
   var randomElement = array[randomIndex];
   return randomElement;
-}
+};
 
 // массив произвольной длины
 function getArrayLength(array) {
   var clone = array.slice();
   clone.length = getRandomNumber(1, array.length);
   return clone;
-}
+};
 
 // массив в случайном порядке
 function shuffleArray(array) {
@@ -116,7 +111,7 @@ function shuffleArray(array) {
     array[randomIndex] = tempValue;
   }
   return array;
-}
+};
 
 // Переводим название типов жилья на русский
 function translateType(type) {
@@ -130,37 +125,32 @@ function translateType(type) {
     default:
       return type;
   }
-}
-
-// У блока .map уберите класс .map--faded.
+};
 
 var sectionMap = document.querySelector('.map');
 sectionMap.classList.remove('map--faded');
 
-//
 function renderPins(pins) {
-var mapPin = document.querySelector('.map_pins');
-var template = document.querySelector('#pin').content.querySelector('button');
-var fragment = document.createDocumentFragment;
+  var mapPin = document.querySelector('.map_pins');
+  var template = document.querySelector('#pin').content.querySelector('button');
+  var fragment = document.createDocumentFragment;
 
-for (var i = 0; i < pins.length; i++) {
-  var mapPinElement = template.cloneNode(true);
-  mapPinElement.style.left = ads[i].location.x;
-  mapPinElement.style.top = ads[i].location.y;
-  fragment.appendChild(mapPinElement);
-}
+  for (var i = 0; i < pins.length; i++) {
+    var mapPinElement = template.cloneNode(true);
+    mapPinElement.style.left = ads[i].location.x;
+    mapPinElement.style.top = ads[i].location.y;
+    fragment.appendChild(mapPinElement);
+  }
 
 mapPin.appendChild(fragment);
-}
+};
 
-//
 var sectionMap = document.querySelector('.map')
 var mapCard = document.createElement('div');
 var afterMapCard = document.querySelector('.map__filters-container');
 mapCard.classList.add('map_card');
 sectionMap.insertBefore(mapCard, afterMapCard);
 
-//
 var getFeatures = function (arr) {
   for (var i = 0; i < arr.length; i++) {
     var li = document.createElement('li');
@@ -182,7 +172,6 @@ var getPhotos = function (arr) {
   }
   return fragment;
 };
-//
 
 function getAds(advertisement) {
   var offer = advertisement.offer;
