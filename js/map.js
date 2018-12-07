@@ -145,7 +145,8 @@ var fragment = document.createDocumentFragment;
 
 for (var i = 0; i < pins.length; i++) {
   var mapPinElement = template.cloneNode(true);
-  mapPinElement.style =  'left: ' + ads[i].location.x + 'px; top:'+ ads[i].location.y + 'px;'; //это аообще правильная запись?
+  mapPinElement.style.left = ads[i].location.x;
+  mapPinElement.style.top = ads[i].location.y;
   fragment.appendChild(mapPinElement);
 }
 
@@ -160,10 +161,32 @@ mapCard.classList.add('map_card');
 sectionMap.insertBefore(mapCard, afterMapCard);
 
 //
+var getFeatures = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var li = document.createElement('li');
+    li.className = 'popup__feature popup__feature--' + arr[i];
+    fragment.appendChild(li);
+  }
+  return fragment;
+};
+
+var getPhotos = function (arr) {
+  for (var i = 0; i < arr.length; i++) {
+    var img = document.createElement('img');
+    img.className = 'popup__photo';
+    img.src = arr[i];
+    img.alt = 'Фотография жилья';
+    img.width = 45;
+    img.height = 40;
+    fragment.appendChild(img);
+  }
+  return fragment;
+};
+//
 
 function getAds(advertisement) {
   var offer = advertisement.offer;
-  var autor = advertisement.autor;
+  var author = advertisement.author;
 
   var mapCardPlace = document.querySelector('.map_card');
   var templateCard = document.querySelector('#card').content.querySelector('article');
@@ -177,15 +200,17 @@ function getAds(advertisement) {
     mapCardElement.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
     mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
-    var features = mapCardElement.querySelector('.popup__features');
-    mapCardElement.removeChild(features);
-    // как мне создать новые актульные удобства?
+    var featuresElement = mapCardElement.querySelector('.popup__features');
+    featuresElement.innerHTML = '';
+    featuresElement.appendChild(getFeatures(offer.features));
 
     mapCardElement.querySelector('.popup__description').textContent = offer.description;
-    mapCardElement.querySelector('.popup__photos');
-    // как вывести все фото и записать в них разные src?
 
-    mapCardPlace.img.src = autor.avatar;
+    var photosElement = mapCardElement.querySelector('.popup__photos');
+    photosElement.innerHTML = '';
+    photosElement.appendChild(getPhotos(offer.photos));
+
+    mapCardPlace.img.src = author.avatar;
 
     mapCardPlace.appendChild(mapCardElement);
   }
