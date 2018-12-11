@@ -137,7 +137,7 @@ function renderPins(pins) {
 
   for (var i = 0; i < pins.length; i++) {
     var mapPinElement = template.cloneNode(true);
-    var author = pins.author;
+    var author = pins[i].author;
     mapPinElement.querySelector('img').src = author.avatar;
     mapPinElement.style.left = pins[i].location.x + 'px';
     mapPinElement.style.top = pins[i].location.y + 'px';
