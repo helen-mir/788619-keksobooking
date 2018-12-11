@@ -57,8 +57,8 @@ function generateAds() {
     var locationY = getRandomNumber(MIN_Y, MAX_Y);
 
     ads.push({
-      'autor': {
-        'avatar': 'img/avatars/user' + ('0' + i) + '.png',
+      'author': {
+        'avatar': 'img/avatars/user' + ('0' + (i + 1)) + '.png',
       },
       'offer': {
         'title': titleAds[i],
@@ -81,11 +81,11 @@ function generateAds() {
   }
 
   return ads;
-};
+}
 
 function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+}
 
 function getRandomElement(array) {
   for (var i = 0; i < array.length; i++) {
@@ -93,14 +93,14 @@ function getRandomElement(array) {
   }
   var randomElement = array[randomIndex];
   return randomElement;
-};
+}
 
 // массив произвольной длины
 function getArrayLength(array) {
   var clone = array.slice();
   clone.length = getRandomNumber(1, array.length);
   return clone;
-};
+}
 
 // массив в случайном порядке
 function shuffleArray(array) {
@@ -111,7 +111,7 @@ function shuffleArray(array) {
     array[randomIndex] = tempValue;
   }
   return array;
-};
+}
 
 // Переводим название типов жилья на русский
 function translateType(type) {
@@ -125,33 +125,31 @@ function translateType(type) {
     default:
       return type;
   }
-};
+}
 
 var sectionMap = document.querySelector('.map');
 sectionMap.classList.remove('map--faded');
 
 function renderPins(pins) {
-  var mapPin = document.querySelector('.map_pins');
+  var mapPin = document.querySelector('.map__pins');
   var template = document.querySelector('#pin').content.querySelector('button');
-  var fragment = document.createDocumentFragment;
+  var fragment = document.createDocumentFragment();
 
   for (var i = 0; i < pins.length; i++) {
     var mapPinElement = template.cloneNode(true);
-    mapPinElement.style.left = ads[i].location.x;
-    mapPinElement.style.top = ads[i].location.y;
+    var author = pins.author;
+    mapPinElement.querySelector('img').src = author.avatar;
+    mapPinElement.style.left = pins[i].location.x + 'px';
+    mapPinElement.style.top = pins[i].location.y + 'px';
     fragment.appendChild(mapPinElement);
   }
 
 mapPin.appendChild(fragment);
-};
-
-var sectionMap = document.querySelector('.map')
-var mapCard = document.createElement('div');
-var afterMapCard = document.querySelector('.map__filters-container');
-mapCard.classList.add('map_card');
-sectionMap.insertBefore(mapCard, afterMapCard);
+}
 
 var getFeatures = function (arr) {
+  var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < arr.length; i++) {
     var li = document.createElement('li');
     li.className = 'popup__feature popup__feature--' + arr[i];
@@ -161,6 +159,8 @@ var getFeatures = function (arr) {
 };
 
 var getPhotos = function (arr) {
+  var fragment = document.createDocumentFragment();
+
   for (var i = 0; i < arr.length; i++) {
     var img = document.createElement('img');
     img.className = 'popup__photo';
@@ -180,7 +180,7 @@ function getAds(advertisement) {
   var mapCardPlace = document.querySelector('.map_card');
   var templateCard = document.querySelector('#card').content.querySelector('article');
 
-  for (var i = 0; i < advertisement.length; i++) {
+
     var mapCardElement = templateCard.cloneNode(true);
     mapCardElement.querySelector('.popup__title').textContent = offer.title;
     mapCardElement.querySelector('.popup__text--address').textContent = offer.address;
@@ -199,8 +199,17 @@ function getAds(advertisement) {
     photosElement.innerHTML = '';
     photosElement.appendChild(getPhotos(offer.photos));
 
-    mapCardPlace.img.src = author.avatar;
+    mapCardElement.querySelector('.popup__avatar').src = author.avatar;
 
     mapCardPlace.appendChild(mapCardElement);
-  }
-};
+}
+
+var sectionMap = document.querySelector('.map')
+var mapCard = document.createElement('div');
+var afterMapCard = document.querySelector('.map__filters-container');
+mapCard.classList.add('map_card');
+sectionMap.insertBefore(mapCard, afterMapCard);
+
+var advertisements = generateAds();
+renderPins(advertisements);
+getAds(advertisements[1]);
