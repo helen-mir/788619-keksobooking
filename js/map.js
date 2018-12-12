@@ -127,8 +127,8 @@ function translateType(type) {
   }
 }
 
-var sectionMap = document.querySelector('.map');
-sectionMap.classList.remove('map--faded');
+//var sectionMap = document.querySelector('.map');
+//sectionMap.classList.remove('map--faded');
 
 function renderPins(pins) {
   var mapPin = document.querySelector('.map__pins');
@@ -210,6 +210,43 @@ var afterMapCard = document.querySelector('.map__filters-container');
 mapCard.classList.add('map_card');
 sectionMap.insertBefore(mapCard, afterMapCard);
 
+/*
 var advertisements = generateAds();
 renderPins(advertisements);
 getAds(advertisements[1]);
+*/
+
+//ВТОРОЕ ЗАДАНИЕ #16 Личный проект: подробности
+//неактивное состояние
+var mapFilter = document.querySelectorAll('.map__filter');
+var mapFeatures = document.querySelector('.map__features');
+var formHeader = document.querySelector('.ad-form-header');
+var formElement = document.querySelectorAll('.ad-form__element');
+
+mapFilter.disabled = true;
+mapFeatures.disabled = true;
+formHeader.disabled = true;
+formElement.disabled = true;
+
+//активное состояние
+var mapPinMain = document.querySelector('.map__pin--main');
+mapPinMain.addEventListener('mouseup', function() {
+  //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
+  mapFilter.disabled = false;
+  mapFeatures.disabled = false;
+  formHeader.disabled = false;
+  formElement.disabled = false;
+
+  var sectionMap = document.querySelector('.map');
+  sectionMap.classList.remove('map--faded');
+
+  var form = document.querySelector('.ad-form');
+  form.classList.remove('ad-form--disabled');
+
+  var advertisements = generateAds();
+  renderPins(advertisements);
+  //вызов метода, который устанавливает значения поля ввода адреса.
+})
+
+//Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
+//Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
