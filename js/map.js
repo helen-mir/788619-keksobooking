@@ -14,6 +14,11 @@ var MAX_Y = 630;
 var MIN_X = 0;
 var MAX_X = 1200;
 
+var INACTIVEPIN_WIDTH = 156;
+var INACTIVEPIN_HEIGHT = 156;
+var ACTIVEPIN_WIDTH = 62;
+var ACTIVEPIN_HEIGHT = 84;
+
 var TITLE_ADS = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -228,6 +233,11 @@ mapFeatures.disabled = true;
 formHeader.disabled = true;
 formElement.disabled = true;
 
+//запись в инпут координат метки в неактивном состоянии
+var address = document.querySelector('#address');
+var mapPinMain = document.querySelector('.map__pin--main');
+address.value = Math.round(mapPinMain.style.left + (INACTIVEPIN_WIDTH / 2)) + ', ' + Math.round(mapPinMain.style.top + (INACTIVEPIN_HEIGHT / 2));
+
 //активное состояние
 var mapPinMain = document.querySelector('.map__pin--main');
 mapPinMain.addEventListener('mouseup', function() {
@@ -245,8 +255,27 @@ mapPinMain.addEventListener('mouseup', function() {
 
   var advertisements = generateAds();
   renderPins(advertisements);
-  //вызов метода, который устанавливает значения поля ввода адреса.
-})
+
+  //при активации записываются следующие координаты метки в инпут
+  address.value = Math.round(mapPinMain.style.left + (ACTIVEPIN_WIDTH/2)) + ', ' + Math.round(mapPinMain.style.top + ACTIVEPIN_HEIGHT);
+  })
 
 //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
 //Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
+var advertisementsList = generateAds();
+var icons = document.querySelectorAll('.map__pin');
+var advertisements = document.querySelector('.full-photo');
+
+var addAdsClickHandler = function (thumbnail, photo) {
+  icons.addEventListener('click', function () {
+    getAds(advertisementsList[i]);
+  });
+};
+
+for (var i = 0; i < icons.length; i++) {
+  addAdsClickHandler(icons[i], advertisements[i]);
+}
+
+//поймать клик на .map-pin
+//вывести соответсвующее объявление
+
