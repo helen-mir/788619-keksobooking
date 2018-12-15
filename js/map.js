@@ -14,6 +14,11 @@ var MAX_Y = 630;
 var MIN_X = 0;
 var MAX_X = 1200;
 
+var INACTIVEPIN_WIDTH = 156;
+var INACTIVEPIN_HEIGHT = 156;
+var ACTIVEPIN_WIDTH = 62;
+var ACTIVEPIN_HEIGHT = 84;
+
 var TITLE_ADS = [
   'Большая уютная квартира',
   'Маленькая неуютная квартира',
@@ -127,20 +132,21 @@ function translateType(type) {
   }
 }
 
-var sectionMap = document.querySelector('.map');
-sectionMap.classList.remove('map--faded');
+//var sectionMap = document.querySelector('.map');
+//sectionMap.classList.remove('map--faded');
 
-function renderPins(pins) {
+function renderPins(ads) {
   var mapPin = document.querySelector('.map__pins');
   var template = document.querySelector('#pin').content.querySelector('button');
   var fragment = document.createDocumentFragment();
 
-  for (var i = 0; i < pins.length; i++) {
+  for (var i = 0; i < ads.length; i++) {
     var mapPinElement = template.cloneNode(true);
-    var author = pins[i].author;
+    var author = ads[i].author;
     mapPinElement.querySelector('img').src = author.avatar;
-    mapPinElement.style.left = pins[i].location.x + 'px';
-    mapPinElement.style.top = pins[i].location.y + 'px';
+    mapPinElement.style.left = ads[i].location.x + 'px';
+    mapPinElement.style.top = ads[i].location.y + 'px';
+    addAdsClickHandler(mapPinElement, ads[i]);
     fragment.appendChild(mapPinElement);
   }
 
@@ -181,27 +187,27 @@ function getAds(advertisement) {
   var templateCard = document.querySelector('#card').content.querySelector('article');
 
 
-    var mapCardElement = templateCard.cloneNode(true);
-    mapCardElement.querySelector('.popup__title').textContent = offer.title;
-    mapCardElement.querySelector('.popup__text--address').textContent = offer.address;
-    mapCardElement.querySelector('.popup__text--price').textContent = offer.price + '₽/ночь';
-    mapCardElement.querySelector('.popup__type').textContent = translateType(offer.type);
-    mapCardElement.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
-    mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
+  var mapCardElement = templateCard.cloneNode(true);
+  mapCardElement.querySelector('.popup__title').textContent = offer.title;
+  mapCardElement.querySelector('.popup__text--address').textContent = offer.address;
+  mapCardElement.querySelector('.popup__text--price').textContent = offer.price + '₽/ночь';
+  mapCardElement.querySelector('.popup__type').textContent = translateType(offer.type);
+  mapCardElement.querySelector('.popup__text--capacity').textContent = offer.rooms + ' комнаты для ' + offer.guests + ' гостей';
+  mapCardElement.querySelector('.popup__text--time').textContent = 'Заезд после ' + offer.checkin + ', выезд до ' + offer.checkout;
 
-    var featuresElement = mapCardElement.querySelector('.popup__features');
-    featuresElement.innerHTML = '';
-    featuresElement.appendChild(getFeatures(offer.features));
+  var featuresElement = mapCardElement.querySelector('.popup__features');
+  featuresElement.innerHTML = '';
+  featuresElement.appendChild(getFeatures(offer.features));
 
-    mapCardElement.querySelector('.popup__description').textContent = offer.description;
+  mapCardElement.querySelector('.popup__description').textContent = offer.description;
 
-    var photosElement = mapCardElement.querySelector('.popup__photos');
-    photosElement.innerHTML = '';
-    photosElement.appendChild(getPhotos(offer.photos));
+  var photosElement = mapCardElement.querySelector('.popup__photos');
+  photosElement.innerHTML = '';
+  photosElement.appendChild(getPhotos(offer.photos));
 
-    mapCardElement.querySelector('.popup__avatar').src = author.avatar;
+  mapCardElement.querySelector('.popup__avatar').src = author.avatar;
 
-    mapCardPlace.appendChild(mapCardElement);
+  mapCardPlace.appendChild(mapCardElement);
 }
 
 var sectionMap = document.querySelector('.map')
@@ -210,6 +216,62 @@ var afterMapCard = document.querySelector('.map__filters-container');
 mapCard.classList.add('map_card');
 sectionMap.insertBefore(mapCard, afterMapCard);
 
+/*
 var advertisements = generateAds();
 renderPins(advertisements);
 getAds(advertisements[1]);
+*/
+
+//ВТОРОЕ ЗАДАНИЕ #16 Личный проект: подробности
+//неактивное состояние
+var mapFilter = document.querySelectorAll('.map__filter');
+var mapFeatures = document.querySelector('.map__features');
+var formHeader = document.querySelector('.ad-form-header');
+var formElement = document.querySelectorAll('.ad-form__element');
+
+mapFilter.disabled = true;
+mapFeatures.disabled = true;
+formHeader.disabled = true;
+formElement.disabled = true;
+
+//запись в инпут координат метки в неактивном состоянии
+var address = document.querySelector('#address');
+var mapPinMain = document.querySelector('.map__pin--main');
+address.value = Math.round(mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2)) + ', ' + Math.round(mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2));
+
+//активное состояние
+var mapPinMain = document.querySelector('.map__pin--main');
+mapPinMain.addEventListener('mouseup', function() {
+  //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
+  mapFilter.disabled = false;
+  mapFeatures.disabled = false;
+  formHeader.disabled = false;
+  formElement.disabled = false;
+
+  var sectionMap = document.querySelector('.map');
+  sectionMap.classList.remove('map--faded');
+
+  var form = document.querySelector('.ad-form');
+  form.classList.remove('ad-form--disabled');
+
+  var advertisements = generateAds();
+  renderPins(advertisements);
+
+  //при активации записываются следующие координаты метки в инпут
+  address.value = Math.round(mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2)) + ', ' + Math.round(mapPinMain.offsetTop + ACTIVEPIN_HEIGHT);
+  })
+
+//Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
+//Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
+var advertisementsList = generateAds();
+var advertisements = document.querySelector('.full-photo');
+
+var addAdsClickHandler = function (icon, advertisement) {
+  icon.addEventListener('click', function () {
+    getAds(advertisement);
+  });
+};
+
+//поймать клик на .map-pin
+//вывести соответсвующее объявление
+
