@@ -286,26 +286,30 @@ var defineMinPrise = function () {
   var price;
 
   if (typeInput.value === 'bungalo') {
-    price = '0';
+    price = 0;
   } else if (typeInput.value === 'flat') {
-    price = '1000';
+    price = 1000;
   } else if (typeInput.value === 'house') {
-    price = '5000';
+    price = 5000;
   } else if (typeInput.value === 'palace') {
-    price = '10000';
+    price = 10000;
   }
 
-  priceInput.minlength = priceInput.placeholder = price;
+  if (priceInput.value < price) {
+    priceInput.setCustomValidity('минимальная стоимость для выбранного типа жилья ' + price)
+  }
+
+  priceInput.min = priceInput.placeholder = price;
 }
 
 //нужно отловить событие выбора цены за ночь
-priceInput.addEventListener('input', function() {
+typeInput.addEventListener('change', function() {
   defineMinPrise();
 })
 
 //пункт 2.5 из ТЗ
 //нужно отловить событие выбора времени заезда
-timeinInput.addEventListener('input', function() {
+timeinInput.addEventListener('change', function() {
   //изменение времени выезда
   if (timeinInput.value === '14.00') {
     timeoutInput.value = '14.00'
@@ -316,7 +320,7 @@ timeinInput.addEventListener('input', function() {
   }
 })
 //нужно отловить событие выбора времени выезда
-timeoutInput.addEventListener('input', function() {
+timeoutInput.addEventListener('change', function() {
   //изменение времени въезда
     if (timeoutInput.value === '14.00') {
     timeinInput.value = '14.00'
@@ -328,3 +332,26 @@ timeoutInput.addEventListener('input', function() {
 })
 
 //пункт 2.6 из ТЗ
+roomNumberInput.addEventListener('change', function() {
+  if (roomNumberInput.value === '1') {
+    //вариант "для 1 гостя"
+     if (capacityInput.value === '3' || '2' || '0') {
+      capacityInput.setCustomValidity('для одной комнаты доступен только вариант "для 1 гостя"')
+     }
+  } else if (roomNumberInput.value === '2') {
+    //вариант «для 2 гостей» или «для 1 гостя»
+      if (capacityInput.value === '3' || '0') {
+      capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»')
+     }
+  } else if (roomNumberInput.value === '3') {
+    //вариант «для 3 гостей», «для 2 гостей» или «для 1 гостя»
+      if (capacityInput.value === '0') {
+      capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»')
+     }
+  } else if (roomNumberInput.value === '100') {
+    //вариант "не для гостей"
+    if (capacityInput.value === '3' || '2' || '1') {
+      capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
+     }
+  }
+})
