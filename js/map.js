@@ -272,6 +272,59 @@ var addAdsClickHandler = function (icon, advertisement) {
   });
 };
 
-//поймать клик на .map-pin
-//вывести соответсвующее объявление
+//#17 Личный проект: доверяй, но проверяй
+var typeInput = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var roomNumberInput = document.querySelector('#room_number');
+var capacityInput = document.querySelector('#capacity');
+var timeinInput = document.querySelector('#timein');
+var timeoutInput = document.querySelector('#timeout');
 
+//пункт 2.3 из ТЗ
+//функция, определяющая минимальную цену за ночь
+var defineMinPrise = function () {
+  var price;
+
+  if (typeInput.value === 'bungalo') {
+    price = '0';
+  } else if (typeInput.value === 'flat') {
+    price = '1000';
+  } else if (typeInput.value === 'house') {
+    price = '5000';
+  } else if (typeInput.value === 'palace') {
+    price = '10000';
+  }
+
+  priceInput.minlength = priceInput.placeholder = price;
+}
+
+//нужно отловить событие выбора цены за ночь
+priceInput.addEventListener('input', function() {
+  defineMinPrise();
+})
+
+//пункт 2.5 из ТЗ
+//нужно отловить событие выбора времени заезда
+timeinInput.addEventListener('input', function() {
+  //изменение времени выезда
+  if (timeinInput.value === '14.00') {
+    timeoutInput.value = '14.00'
+  } else if (timeinInput.value === '13.00'){
+    timeoutInput.value = '13.00'
+  } else if (timeinInput.value === '12.00'){
+    timeoutInput.value = '12.00'
+  }
+})
+//нужно отловить событие выбора времени выезда
+timeoutInput.addEventListener('input', function() {
+  //изменение времени въезда
+    if (timeoutInput.value === '14.00') {
+    timeinInput.value = '14.00'
+  } else if (timeoutInput.value === '13.00'){
+    timeinInput.value = '13.00'
+  } else if (timeoutInput.value === '12.00'){
+    timeinInput.value = '12.00'
+  }
+})
+
+//пункт 2.6 из ТЗ
