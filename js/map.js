@@ -311,47 +311,49 @@ typeInput.addEventListener('change', function() {
 //нужно отловить событие выбора времени заезда
 timeinInput.addEventListener('change', function() {
   //изменение времени выезда
-  if (timeinInput.value === '14.00') {
-    timeoutInput.value = '14.00'
-  } else if (timeinInput.value === '13.00'){
-    timeoutInput.value = '13.00'
-  } else if (timeinInput.value === '12.00'){
-    timeoutInput.value = '12.00'
+  if (timeinInput.value === '14:00') {
+    timeoutInput.value = '14:00'
+  } else if (timeinInput.value === '13:00'){
+    timeoutInput.value = '13:00'
+  } else if (timeinInput.value === '12:00'){
+    timeoutInput.value = '12:00'
   }
 })
 //нужно отловить событие выбора времени выезда
 timeoutInput.addEventListener('change', function() {
   //изменение времени въезда
-    if (timeoutInput.value === '14.00') {
-    timeinInput.value = '14.00'
-  } else if (timeoutInput.value === '13.00'){
-    timeinInput.value = '13.00'
-  } else if (timeoutInput.value === '12.00'){
-    timeinInput.value = '12.00'
+    if (timeoutInput.value === '14:00') {
+    timeinInput.value = '14:00'
+  } else if (timeoutInput.value === '13:00'){
+    timeinInput.value = '13:00'
+  } else if (timeoutInput.value === '12:00'){
+    timeinInput.value = '12:00'
   }
 })
 
 //пункт 2.6 из ТЗ
 roomNumberInput.addEventListener('change', function() {
+  capacityInput.setCustomValidity('');
+
   if (roomNumberInput.value === '1') {
     //вариант "для 1 гостя"
-     if (capacityInput.value === '3' || '2' || '0') {
+    if (capacityInput.value === '3' || capacityInput.value ==='2' || capacityInput.value ==='0') {
       capacityInput.setCustomValidity('для одной комнаты доступен только вариант "для 1 гостя"')
-     }
+    }
   } else if (roomNumberInput.value === '2') {
     //вариант «для 2 гостей» или «для 1 гостя»
-      if (capacityInput.value === '3' || '0') {
-      capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»')
-     }
+      if (capacityInput.value === '3' || capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»')
+      }
   } else if (roomNumberInput.value === '3') {
     //вариант «для 3 гостей», «для 2 гостей» или «для 1 гостя»
       if (capacityInput.value === '0') {
-      capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»')
-     }
+        capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»')
+      }
   } else if (roomNumberInput.value === '100') {
     //вариант "не для гостей"
-    if (capacityInput.value === '3' || '2' || '1') {
-      capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
-     }
-  }
+      if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
+        capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
+      }
+    }
 })
