@@ -241,6 +241,43 @@ address.value = Math.round(mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2)) + ',
 
 //активное состояние
 var mapPinMain = document.querySelector('.map__pin--main');
+//реализация перемещения метки!!!!!
+mapPinMain.addEventListener('mousedown', function(evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    setup.style.top = (setup.offsetTop - shift.y) + 'px';
+    setup.style.left = (setup.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
 mapPinMain.addEventListener('mouseup', function() {
   //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
   mapFilter.disabled = false;
@@ -272,6 +309,98 @@ var addAdsClickHandler = function (icon, advertisement) {
   });
 };
 
-//поймать клик на .map-pin
-//вывести соответсвующее объявление
+//#17 Личный проект: доверяй, но проверяй
+var typeInput = document.querySelector('#type');
+var priceInput = document.querySelector('#price');
+var roomNumberInput = document.querySelector('#room_number');
+var capacityInput = document.querySelector('#capacity');
+var timeinInput = document.querySelector('#timein');
+var timeoutInput = document.querySelector('#timeout');
 
+//пункт 2.3 из ТЗ
+//функция, определяющая минимальную цену за ночь
+var defineMinPrise = function () {
+  var price;
+
+  if (typeInput.value === 'bungalo') {
+    price = 0;
+  } else if (typeInput.value === 'flat') {
+    price = 1000;
+  } else if (typeInput.value === 'house') {
+    price = 5000;
+  } else if (typeInput.value === 'palace') {
+    price = 10000;
+  }
+
+  if (priceInput.value < price) {
+    priceInput.setCustomValidity('минимальная стоимость для выбранного типа жилья ' + price)
+  } else {
+    priceInput.setCustomValidity('')
+    }
+
+  priceInput.min = priceInput.placeholder = price;
+}
+
+//нужно отловить событие выбора цены за ночь
+typeInput.addEventListener('change', function() {
+  defineMinPrise();
+})
+
+//пункт 2.5 из ТЗ
+//нужно отловить событие выбора времени заезда
+timeinInput.addEventListener('change', function() {
+  //изменение времени выезда
+  if (timeinInput.value === '14:00') {
+    timeoutInput.value = '14:00'
+  } else if (timeinInput.value === '13:00'){
+    timeoutInput.value = '13:00'
+  } else if (timeinInput.value === '12:00'){
+    timeoutInput.value = '12:00'
+  }
+})
+//нужно отловить событие выбора времени выезда
+timeoutInput.addEventListener('change', function() {
+  //изменение времени въезда
+    if (timeoutInput.value === '14:00') {
+    timeinInput.value = '14:00'
+  } else if (timeoutInput.value === '13:00'){
+    timeinInput.value = '13:00'
+  } else if (timeoutInput.value === '12:00'){
+    timeinInput.value = '12:00'
+  }
+})
+
+//пункт 2.6 из ТЗ
+roomNumberInput.addEventListener('change', function() {
+  validateRoom();
+})
+
+capacityInput.addEventListener('change', function() {
+  validateRoom();
+})
+
+var validateRoom = function () {
+    capacityInput.setCustomValidity('');
+
+  if (roomNumberInput.value === '1') {
+    //вариант "для 1 гостя"
+    if (capacityInput.value === '3' || capacityInput.value ==='2' || capacityInput.value ==='0') {
+      capacityInput.setCustomValidity('для одной комнаты доступен только вариант "для 1 гостя"')
+    }
+  } else if (roomNumberInput.value === '2') {
+    //вариант «для 2 гостей» или «для 1 гостя»
+      if (capacityInput.value === '3' || capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»')
+      }
+  } else if (roomNumberInput.value === '3') {
+    //вариант «для 3 гостей», «для 2 гостей» или «для 1 гостя»
+      if (capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»')
+      }
+  } else if (roomNumberInput.value === '100') {
+    //вариант "не для гостей"
+      if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
+        capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
+      }
+    }
+}
