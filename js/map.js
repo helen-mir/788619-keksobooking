@@ -241,6 +241,43 @@ address.value = Math.round(mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2)) + ',
 
 //активное состояние
 var mapPinMain = document.querySelector('.map__pin--main');
+//реализация перемещения метки!!!!!
+mapPinMain.addEventListener('mousedown', function(evt) {
+  evt.preventDefault();
+
+  var startCoords = {
+    x: evt.clientX,
+    y: evt.clientY
+  };
+
+  var onMouseMove = function (moveEvt) {
+    moveEvt.preventDefault();
+
+    var shift = {
+      x: startCoords.x - moveEvt.clientX,
+      y: startCoords.y - moveEvt.clientY
+    };
+
+    startCoords = {
+      x: moveEvt.clientX,
+      y: moveEvt.clientY
+    };
+
+    setup.style.top = (setup.offsetTop - shift.y) + 'px';
+    setup.style.left = (setup.offsetLeft - shift.x) + 'px';
+  };
+
+  var onMouseUp = function (upEvt) {
+    upEvt.preventDefault();
+
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  };
+
+  document.addEventListener('mousemove', onMouseMove);
+  document.addEventListener('mouseup', onMouseUp);
+});
+
 mapPinMain.addEventListener('mouseup', function() {
   //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
   mapFilter.disabled = false;
@@ -297,7 +334,9 @@ var defineMinPrise = function () {
 
   if (priceInput.value < price) {
     priceInput.setCustomValidity('минимальная стоимость для выбранного типа жилья ' + price)
-  }
+  } else {
+    priceInput.setCustomValidity('')
+    }
 
   priceInput.min = priceInput.placeholder = price;
 }
@@ -333,7 +372,15 @@ timeoutInput.addEventListener('change', function() {
 
 //пункт 2.6 из ТЗ
 roomNumberInput.addEventListener('change', function() {
-  capacityInput.setCustomValidity('');
+  validateRoom();
+})
+
+capacityInput.addEventListener('change', function() {
+  validateRoom();
+})
+
+var validateRoom = function () {
+    capacityInput.setCustomValidity('');
 
   if (roomNumberInput.value === '1') {
     //вариант "для 1 гостя"
@@ -356,4 +403,4 @@ roomNumberInput.addEventListener('change', function() {
         capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
       }
     }
-})
+}
