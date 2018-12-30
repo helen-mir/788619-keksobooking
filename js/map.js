@@ -269,9 +269,6 @@ mapPinMain.addEventListener('mousedown', function(evt) {
     var x = mapPinMain.offsetLeft - shift.x;
     var y = mapPinMain.offsetTop - shift.y;
 
-    mapPinMain.style.top = y + 'px';
-    mapPinMain.style.left = x + 'px';
-
     //ограничение перетаскивания маркера внутри карты
     if (x < MIN_X) {
       x = MIN_X;
@@ -288,6 +285,9 @@ mapPinMain.addEventListener('mousedown', function(evt) {
     if (y > MAX_Y) {
       y = MAX_Y;
     }
+
+    mapPinMain.style.top = y + 'px';
+    mapPinMain.style.left = x + 'px';
   };
 
   var onMouseUp = function (upEvt) {
