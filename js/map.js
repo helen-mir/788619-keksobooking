@@ -250,8 +250,11 @@ mapPinMain.addEventListener('mousedown', function(evt) {
     y: evt.clientY
   };
 
+  var dragged = false;
+
   var onMouseMove = function (moveEvt) {
     moveEvt.preventDefault();
+    dragged = true;
 
     var shift = {
       x: startCoords.x - moveEvt.clientX,
@@ -263,8 +266,28 @@ mapPinMain.addEventListener('mousedown', function(evt) {
       y: moveEvt.clientY
     };
 
-    setup.style.top = (setup.offsetTop - shift.y) + 'px';
-    setup.style.left = (setup.offsetLeft - shift.x) + 'px';
+    var x = mapPinMain.offsetLeft - shift.x;
+    var y = mapPinMain.offsetTop - shift.y;
+
+    //ограничение перетаскивания маркера внутри карты
+    if (x < MIN_X) {
+      x = MIN_X;
+    }
+
+    if (x > MAX_X) {
+      x = MAX_X;
+    }
+
+    if (y < MIN_Y) {
+      y = MIN_Y;
+    }
+
+    if (y > MAX_Y) {
+      y = MAX_Y;
+    }
+
+    mapPinMain.style.top = y + 'px';
+    mapPinMain.style.left = x + 'px';
   };
 
   var onMouseUp = function (upEvt) {
@@ -272,6 +295,14 @@ mapPinMain.addEventListener('mousedown', function(evt) {
 
     document.removeEventListener('mousemove', onMouseMove);
     document.removeEventListener('mouseup', onMouseUp);
+
+    if (dragged) {
+        var onClickPreventDefault = function (evt) {
+          evt.preventDefault();
+          mapPinMain.removeEventListener('click', onClickPreventDefault)
+        };
+        mapPinMain.addEventListener('click', onClickPreventDefault);
+      }
   };
 
   document.addEventListener('mousemove', onMouseMove);
