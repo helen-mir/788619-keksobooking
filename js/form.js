@@ -7,7 +7,7 @@
   var timeoutInput = document.querySelector('#timeout');
 
   //функция, определяющая минимальную цену за ночь
-  var defineMinPrise = function () {
+  var defineMinPrice = function () {
     var price;
 
     if (typeInput.value === 'bungalo') {
@@ -31,7 +31,7 @@
 
   //отлавливание события выбора цены за ночь
   typeInput.addEventListener('change', function() {
-    defineMinPrise();
+    defineMinPrice();
   })
 
   //отлавливание события выбора времени заезда

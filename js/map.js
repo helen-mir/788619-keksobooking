@@ -110,8 +110,8 @@
     var form = document.querySelector('.ad-form');
     form.classList.remove('ad-form--disabled');
 
-    var advertisements = generateAds();
-    renderPins(advertisements);
+    var advertisements = window.data.generateAds();
+    window.renderPins(advertisements);
 
     //при активации записываются следующие координаты метки в инпут
     address.value = Math.round(mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2)) + ', ' + Math.round(mapPinMain.offsetTop + ACTIVEPIN_HEIGHT);
@@ -119,12 +119,12 @@
 
   //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
   //Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
-  var advertisementsList = generateAds();
+  var advertisementsList = window.data.generateAds();
   var advertisements = document.querySelector('.full-photo');
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
-      getAds(advertisement);
+      window.getAds(advertisement);
     });
   };
 

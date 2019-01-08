@@ -18,4 +18,6 @@
 
 mapPin.appendChild(fragment);
 }
+
+window.renderPins = renderPins;
 })();
