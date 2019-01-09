@@ -86,4 +86,45 @@
         }
       }
   }
+
+  var calculateAdress = function (x, y) {
+    window.map.address.value = Math.round(x) + ', ' + Math.round(y);
+  }
+
+  var mainSection = document.querySelector('main');
+  var notice = document.querySelector('.notice');
+
+  var showSuccessMessage = function () {
+    var templateSuccess = document.querySelector(#success);
+    var successMessage = template.cloneNode(true);
+
+    mainSection.insertBefore(successMessage, notice);
+  };
+
+  var showErrorMessage = function () {
+    var templateError = document.querySelector(#error);
+    var errorMessage = template.cloneNode(true);
+
+    mainSection.insertBefore(errorMessage, notice);
+  };
+
+  var form = document.querySelector('.ad-form');
+  form.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(form), function (response) {
+      form.reset();
+      window.map.disabledMap();
+      showSuccessMessage();
+    }, function(response) {
+      showErrorMessage();
+    });
+    evt.preventDefault();
+  });
+
+  var resetButton = document.querySelector('.ad-form__reset');
+  resetButton.addEventListener('click', function() {
+    form.reset();
+    window.map.disabledMap();
+  });
+
+  window.calculateAdress = calculateAdress;
 })();
