@@ -96,11 +96,11 @@
 
   var showSuccessMessage = function () {
     var templateSuccess = document.querySelector('#success');
-    var successMessage = template.cloneNode(true);
+    var successMessage = templateSuccess.cloneNode(true);
 
     mainSection.insertBefore(successMessage, notice);
 
-    document.addEventListener('keydown', fuction(evt) {
+    document.addEventListener('keydown', function(evt) {
       if (evt.keyCode === window.data.ESC_KEYCODE) {
         mainSection.removeChild(mainSection.lastElementChild);
       }
@@ -109,15 +109,15 @@
 
   var showErrorMessage = function () {
     var templateError = document.querySelector('#error');
-    var errorMessage = template.cloneNode(true);
+    var errorMessage = templateError.cloneNode(true);
 
     mainSection.insertBefore(errorMessage, notice);
 
-    document.addEventListener('keydown', fuction(evt) {
+    document.addEventListener('keydown', function(evt) {
       if (evt.keyCode === window.data.ESC_KEYCODE) {
         mainSection.removeChild(mainSection.lastElementChild);
       }
-    }
+    })
   };
 
   var form = document.querySelector('.ad-form');
