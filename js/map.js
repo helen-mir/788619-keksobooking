@@ -29,7 +29,7 @@
     formHeader.disabled = true;
     formElement.disabled = true;
 
-    window.calculateAdress(xPin, yPin);
+    window.calculateAddress(xPin, yPin);
   };
 
   //активное состояние
@@ -121,7 +121,7 @@
     //при активации записываются следующие координаты метки в инпут
     var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2);
     var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
-    window.calculateAdress(xActivePin, var yActivePin);
+    window.calculateAddress(xActivePin, yActivePin);
     })
 
   //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.

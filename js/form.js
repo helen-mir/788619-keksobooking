@@ -87,7 +87,7 @@
       }
   }
 
-  var calculateAdress = function (x, y) {
+  var calculateAddress = function (x, y) {
     window.map.address.value = Math.round(x) + ', ' + Math.round(y);
   }
 
@@ -95,17 +95,29 @@
   var notice = document.querySelector('.notice');
 
   var showSuccessMessage = function () {
-    var templateSuccess = document.querySelector(#success);
+    var templateSuccess = document.querySelector('#success');
     var successMessage = template.cloneNode(true);
 
     mainSection.insertBefore(successMessage, notice);
+
+    document.addEventListener('keydown', fuction(evt) {
+      if (evt.keyCode === window.data.ESC_KEYCODE) {
+        mainSection.removeChild(mainSection.lastElementChild);
+      }
+    });
   };
 
   var showErrorMessage = function () {
-    var templateError = document.querySelector(#error);
+    var templateError = document.querySelector('#error');
     var errorMessage = template.cloneNode(true);
 
     mainSection.insertBefore(errorMessage, notice);
+
+    document.addEventListener('keydown', fuction(evt) {
+      if (evt.keyCode === window.data.ESC_KEYCODE) {
+        mainSection.removeChild(mainSection.lastElementChild);
+      }
+    }
   };
 
   var form = document.querySelector('.ad-form');
@@ -126,5 +138,5 @@
     window.map.disabledMap();
   });
 
-  window.calculateAdress = calculateAdress;
+  window.calculateAddress = calculateAddress;
 })();
