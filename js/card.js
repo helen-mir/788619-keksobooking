@@ -19,7 +19,11 @@
 
     var featuresElement = mapCardElement.querySelector('.popup__features');
     featuresElement.innerHTML = '';
-    featuresElement.appendChild(window.data.getFeatures(offer.features));
+    if (offer.features && offer.features.length > 0) {
+      featuresElement.appendChild(window.data.getFeatures(offer.features));
+    } else {
+      featuresElement.classList.add('hidden')
+    }
 
     mapCardElement.querySelector('.popup__description').textContent = offer.description;
 

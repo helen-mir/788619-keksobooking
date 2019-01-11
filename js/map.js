@@ -18,15 +18,19 @@
   var formHeader = document.querySelector('.ad-form-header');
   var formElement = document.querySelectorAll('.ad-form__element');
 
-  mapFilter.disabled = true;
-  mapFeatures.disabled = true;
-  formHeader.disabled = true;
-  formElement.disabled = true;
-
-  //запись в инпут координат метки в неактивном состоянии
   var address = document.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
-  address.value = Math.round(mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2)) + ', ' + Math.round(mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2));
+  var xPin = mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2);
+  var yPin = mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2);
+
+  var disabledMap = function () {
+    mapFilter.disabled = true;
+    mapFeatures.disabled = true;
+    formHeader.disabled = true;
+    formElement.disabled = true;
+
+    window.calculateAddress(xPin, yPin);
+  };
 
   //активное состояние
   //реализация перемещения метки
@@ -110,25 +114,48 @@
     var form = document.querySelector('.ad-form');
     form.classList.remove('ad-form--disabled');
 
-    var advertisements = window.data.generateAds();
-    window.renderPins(advertisements);
+    window.backend.load(function(advertisements) {
+      window.renderPins(advertisements);
+      window.map.originalAds = advertisements;
+    })
 
     //при активации записываются следующие координаты метки в инпут
-    address.value = Math.round(mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2)) + ', ' + Math.round(mapPinMain.offsetTop + ACTIVEPIN_HEIGHT);
+    var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2);
+    var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
+    window.calculateAddress(xActivePin, yActivePin);
     })
 
   //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
   //Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
-  var advertisementsList = window.data.generateAds();
-  var advertisements = document.querySelector('.full-photo');
+  //var advertisementsList = window.data.generateAds();
+  //var advertisements = document.querySelector('.full-photo');
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
+      closeCard();
       window.getAds(advertisement);
     });
   };
 
+  var removePins = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    pins.forEach(function(pin) {
+      pin.remove();
+    })
+  };
+
+  var closeCard = function () {
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  }
+
   window.map = {
-    addAdsClickHandler : addAdsClickHandler
+    addAdsClickHandler : addAdsClickHandler,
+    disabledMap : disabledMap,
+    address : address,
+    removePins : removePins,
+    closeCard : closeCard
   }
 })();
