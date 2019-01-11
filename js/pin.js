@@ -1,12 +1,14 @@
 'use strict';
 
 (function() {
+  var MAX_RENDERED_PINS = 5;
+
   function renderPins(ads) {
     var mapPin = document.querySelector('.map__pins');
     var template = document.querySelector('#pin').content.querySelector('button');
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < ads.length; i++) {
+    for (var i = 0; i < MAX_RENDERED_PINS && i < ads.length; i++) {
       if (!ads[i].offer) {
         continue;
       }

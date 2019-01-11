@@ -116,6 +116,7 @@
 
     window.backend.load(function(advertisements) {
       window.renderPins(advertisements);
+      window.map.originalAds = advertisements;
     })
 
     //при активации записываются следующие координаты метки в инпут
@@ -131,13 +132,30 @@
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
+      closeCard();
       window.getAds(advertisement);
     });
   };
 
+  var removePins = function () {
+    var pins = document.querySelectorAll('.map__pin');
+    pins.forEach(function(pin) {
+      pin.remove();
+    })
+  };
+
+  var closeCard = function () {
+    var mapCard = document.querySelector('.map__card');
+    if (mapCard) {
+      mapCard.remove();
+    }
+  }
+
   window.map = {
     addAdsClickHandler : addAdsClickHandler,
     disabledMap : disabledMap,
-    address : address
+    address : address,
+    removePins : removePins,
+    closeCard : closeCard
   }
 })();
