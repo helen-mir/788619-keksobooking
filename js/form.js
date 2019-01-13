@@ -11,7 +11,7 @@
   var timeinInput = document.querySelector('#timein');
   var timeoutInput = document.querySelector('#timeout');
 
-  //функция, определяющая минимальную цену за ночь
+  // функция, определяющая минимальную цену за ночь
   var defineMinPrice = function () {
     var price;
 
@@ -34,14 +34,14 @@
     priceInput.min = priceInput.placeholder = price;
   }
 
-  //отлавливание события выбора цены за ночь
+  // отлавливание события выбора цены за ночь
   typeInput.addEventListener('change', function() {
     defineMinPrice();
   })
 
-  //отлавливание события выбора времени заезда
+  // отлавливание события выбора времени заезда
   timeinInput.addEventListener('change', function() {
-    //изменение времени выезда
+    // изменение времени выезда
     if (timeinInput.value === '14:00') {
       timeoutInput.value = '14:00'
     } else if (timeinInput.value === '13:00'){
@@ -50,9 +50,9 @@
       timeoutInput.value = '12:00'
     }
   })
-  //отлавливание события выбора времени выезда
+  // отлавливание события выбора времени выезда
   timeoutInput.addEventListener('change', function() {
-    //изменение времени въезда
+    // изменение времени въезда
       if (timeoutInput.value === '14:00') {
       timeinInput.value = '14:00'
     } else if (timeoutInput.value === '13:00'){

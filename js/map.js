@@ -12,10 +12,11 @@
   var formElement = document.querySelectorAll('.ad-form__element');
   var address = document.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var sectionMap = document.querySelector('.map');
   var xPin = mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2);
   var yPin = mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2);
 
-  //неактивное состояние
+  // неактивное состояние
   var disabledMap = function () {
     mapFilter.disabled = true;
     mapFeatures.disabled = true;
@@ -25,8 +26,8 @@
     window.calculateAddress(xPin, yPin);
   };
 
-  //активное состояние
-  //реализация перемещения метки
+  // активное состояние
+  // реализация перемещения метки
   mapPinMain.addEventListener('mousedown', function(evt) {
     evt.preventDefault();
 
@@ -54,7 +55,7 @@
       var x = mapPinMain.offsetLeft - shift.x;
       var y = mapPinMain.offsetTop - shift.y;
 
-      //ограничение перетаскивания маркера внутри карты
+      // ограничение перетаскивания маркера внутри карты
       if (x < window.data.MIN_X) {
         x = window.data.MIN_X;
       }
@@ -104,7 +105,6 @@
   mapPinMain.addEventListener('mouseup', function() {
     activateCard();
 
-    var sectionMap = document.querySelector('.map');
     sectionMap.classList.remove('map--faded');
 
     var form = document.querySelector('.ad-form');

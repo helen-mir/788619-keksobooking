@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var MAX_RENDERED_PINS = 5;
 
   var renderPins = function (ads) {
@@ -23,7 +23,7 @@
     }
 
     mapPin.appendChild(fragment);
-  }
+  };
 
   window.renderPins = renderPins;
 })();

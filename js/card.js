@@ -38,23 +38,23 @@
     mapCardPlace.appendChild(mapCardElement);
 
     addCardListener(mapCardElement);
-  }
+  };
 
   var getFeatures = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    arr.forEach(function(element) {
+    arr.forEach(function (element) {
       var li = document.createElement('li');
       li.className = 'popup__feature popup__feature--' + element;
       fragment.appendChild(li);
-    })
+    });
     return fragment;
   };
 
   var getPhotos = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    arr.forEach(function(element) {
+    arr.forEach(function (element) {
       var img = document.createElement('img');
       img.className = 'popup__photo';
       img.src = element;
@@ -62,7 +62,7 @@
       img.width = PHOTOS_WIDTH;
       img.height = PHOTOS_HEIGHT;
       fragment.appendChild(img);
-    })
+    });
     return fragment;
   };
 
