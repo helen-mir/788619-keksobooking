@@ -1,4 +1,9 @@
 (function() {
+  var PRICE_BUNGALO = 0;
+  var PRICE_FLAT = 1000;
+  var PRICE_HOUSE = 5000;
+  var PRICE_PALACE = 10000;
+
   var typeInput = document.querySelector('#type');
   var priceInput = document.querySelector('#price');
   var roomNumberInput = document.querySelector('#room_number');
@@ -11,13 +16,13 @@
     var price;
 
     if (typeInput.value === 'bungalo') {
-      price = 0;
+      price = PRICE_BUNGALO;
     } else if (typeInput.value === 'flat') {
-      price = 1000;
+      price = PRICE_FLAT;
     } else if (typeInput.value === 'house') {
-      price = 5000;
+      price = PRICE_HOUSE;
     } else if (typeInput.value === 'palace') {
-      price = 10000;
+      price = PRICE_PALACE;
     }
 
     if (priceInput.value < price) {
@@ -93,35 +98,41 @@
 
   var mainSection = document.querySelector('main');
   var notice = document.querySelector('.notice');
+  var templateSuccess = document.querySelector('#success').content.querySelector('.success');
+  var templateError = document.querySelector('#error').content.querySelector('.error');
+
+  var onCloseEsc = function(evt) {
+    if (evt.keyCode === window.data.ESC_KEYCODE) {
+      mainSection.removeChild(mainSection.lastElementChild);
+      document.removeEventListener('keydown', onCloseEsc);
+    }
+  };
 
   var showSuccessMessage = function () {
-    var templateSuccess = document.querySelector('#success');
     var successMessage = templateSuccess.cloneNode(true);
 
     mainSection.insertBefore(successMessage, notice);
 
-    document.addEventListener('keydown', function(evt) {
-      if (evt.keyCode === window.data.ESC_KEYCODE) {
-        mainSection.removeChild(mainSection.lastElementChild);
-      }
-    });
+    document.addEventListener('keydown', onCloseEsc);
   };
 
   var showErrorMessage = function () {
-    var templateError = document.querySelector('#error');
     var errorMessage = templateError.cloneNode(true);
 
     mainSection.insertBefore(errorMessage, notice);
 
-    document.addEventListener('keydown', function(evt) {
-      if (evt.keyCode === window.data.ESC_KEYCODE) {
-        mainSection.removeChild(mainSection.lastElementChild);
-      }
-    })
+    document.addEventListener('keydown', onCloseEsc);
   };
 
   var form = document.querySelector('.ad-form');
   form.addEventListener('submit', function (evt) {
+
+    validateRoom();
+    defineMinPrice();
+
+    evt.preventDefault();
+
+    if (form.checkValidity()) {
     window.backend.upload(new FormData(form), function (response) {
       form.reset();
       window.map.disabledMap();
@@ -129,13 +140,16 @@
     }, function(response) {
       showErrorMessage();
     });
-    evt.preventDefault();
+    } else {
+      form.reportValidity();
+    }
   });
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', function() {
     form.reset();
     window.map.disabledMap();
+    sectionMap.classList.add('map--faded');
   });
 
   window.calculateAddress = calculateAddress;

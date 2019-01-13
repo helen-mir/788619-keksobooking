@@ -6,23 +6,16 @@
   var ACTIVEPIN_WIDTH = 62;
   var ACTIVEPIN_HEIGHT = 84;
 
-  var sectionMap = document.querySelector('.map')
-  var mapCard = document.createElement('div');
-  var afterMapCard = document.querySelector('.map__filters-container');
-  mapCard.classList.add('map_card');
-  sectionMap.insertBefore(mapCard, afterMapCard);
-
-  //неактивное состояние
   var mapFilter = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
   var formHeader = document.querySelector('.ad-form-header');
   var formElement = document.querySelectorAll('.ad-form__element');
-
   var address = document.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
   var xPin = mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2);
   var yPin = mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2);
 
+  //неактивное состояние
   var disabledMap = function () {
     mapFilter.disabled = true;
     mapFeatures.disabled = true;
@@ -101,12 +94,15 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  mapPinMain.addEventListener('mouseup', function() {
-    //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
+  var activateCard = function () {
     mapFilter.disabled = false;
     mapFeatures.disabled = false;
     formHeader.disabled = false;
     formElement.disabled = false;
+  };
+
+  mapPinMain.addEventListener('mouseup', function() {
+    activateCard();
 
     var sectionMap = document.querySelector('.map');
     sectionMap.classList.remove('map--faded');
@@ -119,16 +115,10 @@
       window.map.originalAds = advertisements;
     })
 
-    //при активации записываются следующие координаты метки в инпут
     var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2);
     var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
     window.calculateAddress(xActivePin, yActivePin);
     })
-
-  //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
-  //Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
-  //var advertisementsList = window.data.generateAds();
-  //var advertisements = document.querySelector('.full-photo');
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
@@ -146,6 +136,7 @@
 
   var closeCard = function () {
     var mapCard = document.querySelector('.map__card');
+
     if (mapCard) {
       mapCard.remove();
     }

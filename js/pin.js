@@ -3,7 +3,7 @@
 (function() {
   var MAX_RENDERED_PINS = 5;
 
-  function renderPins(ads) {
+  var renderPins = function (ads) {
     var mapPin = document.querySelector('.map__pins');
     var template = document.querySelector('#pin').content.querySelector('button');
     var fragment = document.createDocumentFragment();

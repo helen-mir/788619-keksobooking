@@ -38,15 +38,15 @@
 
   var selectPrice = function(ad) {
     if (housingPrice.value === 'low') {
-      return ad.offer.price < 10000;
+      return ad.offer.price < LOW_PRICE;
     }
 
     if (housingPrice.value === 'hight') {
-      return ad.offer.price > 50000;
+      return ad.offer.price > HIGH_PRICE;
     }
 
     if (housingPrice.value === 'middle') {
-      return ad.offer.price > 10000 && ad.offer.price < 50000;
+      return ad.offer.price > LOW_PRICE && ad.offer.price < HIGH_PRICE;
     }
 
     return true;
@@ -68,21 +68,20 @@
     return true;
   };
 
-
-
   var selectFeatures = function(ad) {
 
     var checkedFeatures = Array.from(features).filter(function(feature) {
       return feature.checked;
     })
 
-    for (var i = 0; i < checkedFeatures.length; i++) {
-      if (ad.offer.features.indexOf(checkedFeatures[i].value) === -1) {
+    function isCheckedItem(element, index, array) {
+      if (ad.offer.features.indexOf(element.value) === -1) {
         return false;
       }
+       return true;
     }
 
-    return true;
+    checkedFeatures.every(isCheckedItem);
   };
 
   var onFilterChange = function() {

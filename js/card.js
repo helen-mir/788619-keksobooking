@@ -34,6 +34,8 @@
     mapCardElement.querySelector('.popup__avatar').src = author.avatar;
 
     mapCardPlace.appendChild(mapCardElement);
+
+    addCardListener(mapCardElement);
   }
 
   var getFeatures = function (arr) {
@@ -60,6 +62,19 @@
       fragment.appendChild(img);
     }
     return fragment;
+  };
+
+  var addCardListener = function (mapCard) {
+    var closeButton = mapCard.querySelector('.popup__close');
+    closeButton.addEventListener('click', function () {
+      window.map.closeCard();
+    });
+
+    document.addEventListener('keydown', function(evt) {
+      if (evt.keyCode === window.data.ESC_KEYCODE) {
+        window.map.closeCard();
+      }
+    });
   };
 
   window.getAds = getAds;
