@@ -15,8 +15,6 @@
   var MAX_X = 1200;
   var ESC_KEYCODE = 27;
   var ENTER_KEYCODE = 13;
-  var PHOTOS_WIDTH = 45;
-  var PHOTOS_HEIGHT = 40;
 
   var TITLE_ADS = [
     'Большая уютная квартира',
@@ -69,32 +67,6 @@
     }
   }
 
-  var getFeatures = function (arr) {
-    var fragment = document.createDocumentFragment();
-
-    arr.forEach(function(element) {
-      var li = document.createElement('li');
-      li.className = 'popup__feature popup__feature--' + element;
-      fragment.appendChild(li);
-    })
-    return fragment;
-  };
-
-  var getPhotos = function (arr) {
-    var fragment = document.createDocumentFragment();
-
-    arr.forEach(function(element) {
-      var img = document.createElement('img');
-      img.className = 'popup__photo';
-      img.src = element;
-      img.alt = 'Фотография жилья';
-      img.width = PHOTOS_WIDTH;
-      img.height = PHOTOS_HEIGHT;
-      fragment.appendChild(img);
-    })
-    return fragment;
-  };
-
   window.data = {
     MIN_Y : MIN_Y,
     MAX_Y : MAX_Y,
@@ -102,8 +74,6 @@
     MAX_X : MAX_X,
     ESC_KEYCODE : ESC_KEYCODE,
     ENTER_KEYCODE : ENTER_KEYCODE,
-    translateType : translateType,
-    getPhotos : getPhotos,
-    getFeatures : getFeatures
+    translateType : translateType
   };
 })();

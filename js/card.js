@@ -1,13 +1,15 @@
 'use strict';
 
-(function() {
-  function getAds(advertisement) {
+(function () {
+
+  var PHOTOS_WIDTH = 45;
+  var PHOTOS_HEIGHT = 40;
+  var mapCardPlace = document.querySelector('.map_card');
+  var templateCard = document.querySelector('#card').content.querySelector('article');
+
+  var getAds = function (advertisement) {
     var offer = advertisement.offer;
     var author = advertisement.author;
-
-    var mapCardPlace = document.querySelector('.map_card');
-    var templateCard = document.querySelector('#card').content.querySelector('article');
-
 
     var mapCardElement = templateCard.cloneNode(true);
     mapCardElement.querySelector('.popup__title').textContent = offer.title;
@@ -20,16 +22,16 @@
     var featuresElement = mapCardElement.querySelector('.popup__features');
     featuresElement.innerHTML = '';
     if (offer.features && offer.features.length > 0) {
-      featuresElement.appendChild(window.data.getFeatures(offer.features));
+      featuresElement.appendChild(getFeatures(offer.features));
     } else {
-      featuresElement.classList.add('hidden')
+      featuresElement.classList.add('hidden');
     }
 
     mapCardElement.querySelector('.popup__description').textContent = offer.description;
 
     var photosElement = mapCardElement.querySelector('.popup__photos');
     photosElement.innerHTML = '';
-    photosElement.appendChild(window.data.getPhotos(offer.photos));
+    photosElement.appendChild(getPhotos(offer.photos));
 
     mapCardElement.querySelector('.popup__avatar').src = author.avatar;
 
@@ -41,26 +43,26 @@
   var getFeatures = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function(element) {
       var li = document.createElement('li');
-      li.className = 'popup__feature popup__feature--' + arr[i];
+      li.className = 'popup__feature popup__feature--' + element;
       fragment.appendChild(li);
-    }
+    })
     return fragment;
   };
 
   var getPhotos = function (arr) {
     var fragment = document.createDocumentFragment();
 
-    for (var i = 0; i < arr.length; i++) {
+    arr.forEach(function(element) {
       var img = document.createElement('img');
       img.className = 'popup__photo';
-      img.src = arr[i];
+      img.src = element;
       img.alt = 'Фотография жилья';
-      img.width = 45;
-      img.height = 40;
+      img.width = PHOTOS_WIDTH;
+      img.height = PHOTOS_HEIGHT;
       fragment.appendChild(img);
-    }
+    })
     return fragment;
   };
 
@@ -70,7 +72,7 @@
       window.map.closeCard();
     });
 
-    document.addEventListener('keydown', function(evt) {
+    document.addEventListener('keydown', function (evt) {
       if (evt.keyCode === window.data.ESC_KEYCODE) {
         window.map.closeCard();
       }
