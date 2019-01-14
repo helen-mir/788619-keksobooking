@@ -12,6 +12,7 @@
   var capacityInput = document.querySelector('#capacity');
   var timeinInput = document.querySelector('#timein');
   var timeoutInput = document.querySelector('#timeout');
+  var address = document.querySelector('#address');
 
   // функция, определяющая минимальную цену за ночь
   var defineMinPrice = function () {
@@ -96,7 +97,7 @@
   };
 
   var calculateAddress = function (x, y) {
-    window.map.address.value = Math.round(x) + ', ' + Math.round(y);
+    address.value = Math.round(x) + ', ' + Math.round(y);
   };
 
   var mainSection = document.querySelector('main');
@@ -153,6 +154,9 @@
     form.reset();
     window.map.disabledMap();
     window.map.sectionMap.classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
+    window.map.removePins();
+    window.map.closeCard();
   });
 
   window.calculateAddress = calculateAddress;

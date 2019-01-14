@@ -5,6 +5,8 @@
   var INACTIVEPIN_HEIGHT = 156;
   var ACTIVEPIN_WIDTH = 62;
   var ACTIVEPIN_HEIGHT = 84;
+  var PIN_MAIN_LEFT = 570;
+  var PIN_MAIN_TOP = 375;
 
   var mapFilter = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
@@ -13,6 +15,7 @@
   var address = document.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
   var sectionMap = document.querySelector('.map');
+  var form = document.querySelector('.ad-form');
   var xPin = mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2);
   var yPin = mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2);
 
@@ -21,10 +24,17 @@
     mapFilter.disabled = true;
     mapFeatures.disabled = true;
     formHeader.disabled = true;
-    formElement.disabled = true;
+
+    formElement.forEach(function(item) {
+      item.disabled = true;
+    });
 
     window.calculateAddress(xPin, yPin);
+    mapPinMain.style.top = PIN_MAIN_TOP + 'px';
+    mapPinMain.style.left = PIN_MAIN_LEFT + 'px';
   };
+
+  disabledMap();
 
   // активное состояние
   // реализация перемещения метки
@@ -79,15 +89,10 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-
       if (dragged) {
-        var onClickPreventDefault = function (event) {
-          event.preventDefault();
-          mapPinMain.removeEventListener('click', onClickPreventDefault);
-        };
-        mapPinMain.addEventListener('click', onClickPreventDefault);
+        setMainPinPosition();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
       }
     };
 
@@ -95,30 +100,36 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var activateCard = function () {
+  var activateMap = function () {
     mapFilter.disabled = false;
     mapFeatures.disabled = false;
     formHeader.disabled = false;
-    formElement.disabled = false;
+
+    formElement.forEach(function(item) {
+      item.disabled = false;
+    });
   };
 
-  mapPinMain.addEventListener('mouseup', function () {
-    activateCard();
+  var setMainPinPosition =  function () {
+    if (form.classList.contains('ad-form--disabled')) {
+      activateMap();
+      sectionMap.classList.remove('map--faded');
+      form.classList.remove('ad-form--disabled');
+    }
 
-    sectionMap.classList.remove('map--faded');
-
-    var form = document.querySelector('.ad-form');
-    form.classList.remove('ad-form--disabled');
-
-    window.backend.load(function (advertisements) {
-      window.renderPins(advertisements);
-      window.map.originalAds = advertisements;
-    });
+    if (!window.map.originalAds) {
+      window.backend.load(function (advertisements) {
+        window.renderPins(advertisements);
+        window.map.originalAds = advertisements;
+      });
+    } else {
+      renderPins(window.map.originalAds);
+    }
 
     var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH / 2);
     var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
     window.calculateAddress(xActivePin, yActivePin);
-  });
+  };
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
@@ -128,7 +139,7 @@
   };
 
   var removePins = function () {
-    var pins = document.querySelectorAll('.map__pin');
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     pins.forEach(function (pin) {
       pin.remove();
     });

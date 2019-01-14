@@ -6,6 +6,8 @@
   var PHOTOS_HEIGHT = 40;
   var mapCardPlace = document.querySelector('.map_card');
   var templateCard = document.querySelector('#card').content.querySelector('article');
+  var sectionMap = document.querySelector('.map')
+  var afterMapCard = document.querySelector('.map__filters-container');
 
   var getAds = function (advertisement) {
     var offer = advertisement.offer;
@@ -35,7 +37,7 @@
 
     mapCardElement.querySelector('.popup__avatar').src = author.avatar;
 
-    mapCardPlace.appendChild(mapCardElement);
+    sectionMap.insertBefore(mapCardElement, afterMapCard);
 
     addCardListener(mapCardElement);
   };
