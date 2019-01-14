@@ -1,4 +1,4 @@
-(function() {
+(function () {
   var PRICE_BUNGALO = 0;
   var PRICE_FLAT = 1000;
   var PRICE_HOUSE = 5000;
@@ -26,82 +26,82 @@
     }
 
     if (priceInput.value < price) {
-      priceInput.setCustomValidity('минимальная стоимость для выбранного типа жилья ' + price)
+      priceInput.setCustomValidity('минимальная стоимость для выбранного типа жилья ' + price);
     } else {
-      priceInput.setCustomValidity('')
-      }
+      priceInput.setCustomValidity('');
+    }
 
     priceInput.min = priceInput.placeholder = price;
-  }
+  };
 
   // отлавливание события выбора цены за ночь
-  typeInput.addEventListener('change', function() {
+  typeInput.addEventListener('change', function () {
     defineMinPrice();
-  })
+  });
 
   // отлавливание события выбора времени заезда
-  timeinInput.addEventListener('change', function() {
+  timeinInput.addEventListener('change', function () {
     // изменение времени выезда
     if (timeinInput.value === '14:00') {
-      timeoutInput.value = '14:00'
-    } else if (timeinInput.value === '13:00'){
-      timeoutInput.value = '13:00'
-    } else if (timeinInput.value === '12:00'){
-      timeoutInput.value = '12:00'
+      timeoutInput.value = '14:00';
+    } else if (timeinInput.value === '13:00') {
+      timeoutInput.value = '13:00';
+    } else if (timeinInput.value === '12:00') {
+      timeoutInput.value = '12:00';
     }
   })
   // отлавливание события выбора времени выезда
-  timeoutInput.addEventListener('change', function() {
+  timeoutInput.addEventListener('change', function () {
     // изменение времени въезда
-      if (timeoutInput.value === '14:00') {
-      timeinInput.value = '14:00'
-    } else if (timeoutInput.value === '13:00'){
-      timeinInput.value = '13:00'
-    } else if (timeoutInput.value === '12:00'){
-      timeinInput.value = '12:00'
+    if (timeoutInput.value === '14:00') {
+      timeinInput.value = '14:00';
+    } else if (timeoutInput.value === '13:00') {
+      timeinInput.value = '13:00';
+    } else if (timeoutInput.value === '12:00') {
+      timeinInput.value = '12:00';
     }
-  })
+  });
 
-  roomNumberInput.addEventListener('change', function() {
+  roomNumberInput.addEventListener('change', function () {
     validateRoom();
-  })
+  });
 
-  capacityInput.addEventListener('change', function() {
+  capacityInput.addEventListener('change', function () {
     validateRoom();
-  })
+  });
 
   var validateRoom = function () {
-      capacityInput.setCustomValidity('');
+    capacityInput.setCustomValidity('');
 
     if (roomNumberInput.value === '1') {
-      if (capacityInput.value === '3' || capacityInput.value ==='2' || capacityInput.value ==='0') {
-        capacityInput.setCustomValidity('для одной комнаты доступен только вариант "для 1 гостя"')
+      if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для одной комнаты доступен только вариант "для 1 гостя"');
       }
     } else if (roomNumberInput.value === '2') {
-        if (capacityInput.value === '3' || capacityInput.value === '0') {
-          capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»')
+      if (capacityInput.value === '3' || capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»');
         }
     } else if (roomNumberInput.value === '3') {
-        if (capacityInput.value === '0') {
-          capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»')
+      if (capacityInput.value === '0') {
+        capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»');
         }
     } else if (roomNumberInput.value === '100') {
         if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
-          capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"')
+          capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"');
         }
       }
-  }
+  };
 
   var calculateAddress = function (x, y) {
     window.map.address.value = Math.round(x) + ', ' + Math.round(y);
-  }
+  };
 
   var mainSection = document.querySelector('main');
   var notice = document.querySelector('.notice');
   var templateSuccess = document.querySelector('#success').content.querySelector('.success');
   var templateError = document.querySelector('#error').content.querySelector('.error');
 
-  var onCloseEsc = function(evt) {
+  var onCloseEsc = function (evt) {
     if (evt.keyCode === window.data.ESC_KEYCODE) {
       mainSection.removeChild(mainSection.lastElementChild);
       document.removeEventListener('keydown', onCloseEsc);
@@ -133,20 +133,20 @@
     evt.preventDefault();
 
     if (form.checkValidity()) {
-    window.backend.upload(new FormData(form), function (response) {
-      form.reset();
-      window.map.disabledMap();
-      showSuccessMessage();
-    }, function(response) {
-      showErrorMessage();
-    });
-    } else {
-      form.reportValidity();
-    }
+      window.backend.upload(new FormData(form), function () {
+        form.reset();
+        window.map.disabledMap();
+        showSuccessMessage();
+      }, function() {
+        showErrorMessage();
+      });
+      } else {
+        form.reportValidity();
+      }
   });
 
   var resetButton = document.querySelector('.ad-form__reset');
-  resetButton.addEventListener('click', function() {
+  resetButton.addEventListener('click', function () {
     form.reset();
     window.map.disabledMap();
     sectionMap.classList.add('map--faded');

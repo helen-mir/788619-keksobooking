@@ -147,6 +147,7 @@
     disabledMap : disabledMap,
     address : address,
     removePins : removePins,
-    closeCard : closeCard
+    closeCard : closeCard,
+    sectionMap: sectionMap
   }
 })();

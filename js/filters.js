@@ -76,8 +76,8 @@
       if (ad.offer.features.indexOf(element.value) === -1) {
         return false;
       }
-        return true;
-    }
+      return true;
+    };
 
     checkedFeatures.every(isCheckedItem);
   };
