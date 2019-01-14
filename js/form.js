@@ -143,9 +143,9 @@
       }, function () {
         showErrorMessage();
       });
-      } else {
-        form.reportValidity();
-      }
+    } else {
+      form.reportValidity();
+    }
   });
 
   var resetButton = document.querySelector('.ad-form__reset');
