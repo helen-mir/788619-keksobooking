@@ -21,15 +21,15 @@
       default:
         return type;
     }
-  }
+  };
 
   window.data = {
-    MIN_Y : MIN_Y,
-    MAX_Y : MAX_Y,
-    MIN_X : MIN_X,
-    MAX_X : MAX_X,
-    ESC_KEYCODE : ESC_KEYCODE,
-    ENTER_KEYCODE : ENTER_KEYCODE,
-    translateType : translateType
+    MIN_Y: MIN_Y,
+    MAX_Y: MAX_Y,
+    MIN_X: MIN_X,
+    MAX_X: MAX_X,
+    ESC_KEYCODE: ESC_KEYCODE,
+    ENTER_KEYCODE: ENTER_KEYCODE,
+    translateType: translateType
   };
 })();
