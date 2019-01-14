@@ -4,9 +4,8 @@
 
   var PHOTOS_WIDTH = 45;
   var PHOTOS_HEIGHT = 40;
-  var mapCardPlace = document.querySelector('.map_card');
   var templateCard = document.querySelector('#card').content.querySelector('article');
-  var sectionMap = document.querySelector('.map')
+  var sectionMap = document.querySelector('.map');
   var afterMapCard = document.querySelector('.map__filters-container');
 
   var getAds = function (advertisement) {

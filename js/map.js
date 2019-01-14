@@ -25,7 +25,7 @@
     mapFeatures.disabled = true;
     formHeader.disabled = true;
 
-    formElement.forEach(function(item) {
+    formElement.forEach(function (item) {
       item.disabled = true;
     });
 
@@ -105,12 +105,12 @@
     mapFeatures.disabled = false;
     formHeader.disabled = false;
 
-    formElement.forEach(function(item) {
+    formElement.forEach(function (item) {
       item.disabled = false;
     });
   };
 
-  var setMainPinPosition =  function () {
+  var setMainPinPosition = function () {
     if (form.classList.contains('ad-form--disabled')) {
       activateMap();
       sectionMap.classList.remove('map--faded');
@@ -123,7 +123,7 @@
         window.map.originalAds = advertisements;
       });
     } else {
-      renderPins(window.map.originalAds);
+      window.renderPins(window.map.originalAds);
     }
 
     var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH / 2);
