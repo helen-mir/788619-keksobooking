@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var Code = {
     SUCCESS: 200,
     INVALID: 400,

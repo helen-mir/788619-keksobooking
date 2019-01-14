@@ -1,40 +1,44 @@
 'use strict';
 
-(function() {
+(function () {
   var INACTIVEPIN_WIDTH = 156;
   var INACTIVEPIN_HEIGHT = 156;
   var ACTIVEPIN_WIDTH = 62;
   var ACTIVEPIN_HEIGHT = 84;
+  var PIN_MAIN_LEFT = 570;
+  var PIN_MAIN_TOP = 375;
 
-  var sectionMap = document.querySelector('.map')
-  var mapCard = document.createElement('div');
-  var afterMapCard = document.querySelector('.map__filters-container');
-  mapCard.classList.add('map_card');
-  sectionMap.insertBefore(mapCard, afterMapCard);
-
-  //неактивное состояние
   var mapFilter = document.querySelectorAll('.map__filter');
   var mapFeatures = document.querySelector('.map__features');
   var formHeader = document.querySelector('.ad-form-header');
   var formElement = document.querySelectorAll('.ad-form__element');
-
   var address = document.querySelector('#address');
   var mapPinMain = document.querySelector('.map__pin--main');
+  var sectionMap = document.querySelector('.map');
+  var form = document.querySelector('.ad-form');
   var xPin = mapPinMain.offsetLeft + (INACTIVEPIN_WIDTH / 2);
   var yPin = mapPinMain.offsetTop + (INACTIVEPIN_HEIGHT / 2);
 
+  // неактивное состояние
   var disabledMap = function () {
     mapFilter.disabled = true;
     mapFeatures.disabled = true;
     formHeader.disabled = true;
-    formElement.disabled = true;
+
+    formElement.forEach(function (item) {
+      item.disabled = true;
+    });
 
     window.calculateAddress(xPin, yPin);
+    mapPinMain.style.top = PIN_MAIN_TOP + 'px';
+    mapPinMain.style.left = PIN_MAIN_LEFT + 'px';
   };
 
-  //активное состояние
-  //реализация перемещения метки
-  mapPinMain.addEventListener('mousedown', function(evt) {
+  disabledMap();
+
+  // активное состояние
+  // реализация перемещения метки
+  mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -61,7 +65,7 @@
       var x = mapPinMain.offsetLeft - shift.x;
       var y = mapPinMain.offsetTop - shift.y;
 
-      //ограничение перетаскивания маркера внутри карты
+      // ограничение перетаскивания маркера внутри карты
       if (x < window.data.MIN_X) {
         x = window.data.MIN_X;
       }
@@ -85,50 +89,47 @@
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-
       if (dragged) {
-          var onClickPreventDefault = function (evt) {
-            evt.preventDefault();
-            mapPinMain.removeEventListener('click', onClickPreventDefault)
-          };
-          mapPinMain.addEventListener('click', onClickPreventDefault);
-        }
+        setMainPinPosition();
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  mapPinMain.addEventListener('mouseup', function() {
-    //функция, которая будет отменять изменения DOM-элементов, описанные в пункте «Неактивное состояние» технического задания.
+  var activateMap = function () {
     mapFilter.disabled = false;
     mapFeatures.disabled = false;
     formHeader.disabled = false;
-    formElement.disabled = false;
 
-    var sectionMap = document.querySelector('.map');
-    sectionMap.classList.remove('map--faded');
+    formElement.forEach(function (item) {
+      item.disabled = false;
+    });
+  };
 
-    var form = document.querySelector('.ad-form');
-    form.classList.remove('ad-form--disabled');
+  var setMainPinPosition = function () {
+    if (form.classList.contains('ad-form--disabled')) {
+      activateMap();
+      sectionMap.classList.remove('map--faded');
+      form.classList.remove('ad-form--disabled');
+    }
 
-    window.backend.load(function(advertisements) {
-      window.renderPins(advertisements);
-      window.map.originalAds = advertisements;
-    })
+    if (!window.map.originalAds) {
+      window.backend.load(function (advertisements) {
+        window.renderPins(advertisements);
+        window.map.originalAds = advertisements;
+      });
+    } else {
+      window.renderPins(window.map.originalAds);
+    }
 
-    //при активации записываются следующие координаты метки в инпут
-    var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2);
+    var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH / 2);
     var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
     window.calculateAddress(xActivePin, yActivePin);
-    })
-
-  //Нажатие на метку похожего объявления на карте, приводит к показу карточки с подробной информацией об этом объявлении.
-  //Получается, что для меток должны быть созданы обработчики событий, которые вызывают показ карточки с соответствующими данными.
-  //var advertisementsList = window.data.generateAds();
-  //var advertisements = document.querySelector('.full-photo');
+  };
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
@@ -138,24 +139,26 @@
   };
 
   var removePins = function () {
-    var pins = document.querySelectorAll('.map__pin');
-    pins.forEach(function(pin) {
+    var pins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    pins.forEach(function (pin) {
       pin.remove();
-    })
+    });
   };
 
   var closeCard = function () {
     var mapCard = document.querySelector('.map__card');
+
     if (mapCard) {
       mapCard.remove();
     }
-  }
+  };
 
   window.map = {
-    addAdsClickHandler : addAdsClickHandler,
-    disabledMap : disabledMap,
-    address : address,
-    removePins : removePins,
-    closeCard : closeCard
-  }
+    addAdsClickHandler: addAdsClickHandler,
+    disabledMap: disabledMap,
+    address: address,
+    removePins: removePins,
+    closeCard: closeCard,
+    sectionMap: sectionMap
+  };
 })();
