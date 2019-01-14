@@ -20,7 +20,7 @@
       if (lastTimeout) {
         window.clearTimeout(lastTimeout);
       }
-      lastTimeout = window.setTimeout(function() {
+      lastTimeout = window.setTimeout(function () {
         cb.apply(null, parameters);
       }, DEBOUNCE_INTERVAL);
     };
@@ -52,7 +52,7 @@
 
   var selectRooms = function (ad) {
     if (housingRooms.value !== 'any') {
-      return ad.offer.rooms === parseInt(housingRooms.value);
+      return ad.offer.rooms === parseInt(housingRooms.value, 10);
     }
 
     return true;
@@ -60,7 +60,7 @@
 
   var selectGuests = function (ad) {
     if (housingGuests.value !== 'any') {
-      return ad.offer.guests === parseInt(housingGuests.value);
+      return ad.offer.guests === parseInt(housingGuests.value, 10);
     }
 
     return true;
@@ -70,19 +70,19 @@
 
     var checkedFeatures = Array.from(features).filter(function (feature) {
       return feature.checked;
-    })
+    });
 
-    function isCheckedItem (element) {
+    var isCheckedItem = function (element) {
       if (ad.offer.features.indexOf(element.value) === -1) {
         return false;
       }
-       return true;
+        return true;
     }
 
     checkedFeatures.every(isCheckedItem);
   };
 
-  var onFilterChange = function() {
+  var onFilterChange = function () {
     window.map.removePins();
     window.map.closeCard();
 
