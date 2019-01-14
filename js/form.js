@@ -1,3 +1,5 @@
+'use strict';
+
 (function () {
   var PRICE_BUNGALO = 0;
   var PRICE_FLAT = 1000;

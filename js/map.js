@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+(function () {
   var INACTIVEPIN_WIDTH = 156;
   var INACTIVEPIN_HEIGHT = 156;
   var ACTIVEPIN_WIDTH = 62;
@@ -28,7 +28,7 @@
 
   // активное состояние
   // реализация перемещения метки
-  mapPinMain.addEventListener('mousedown', function(evt) {
+  mapPinMain.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
 
     var startCoords = {
@@ -83,12 +83,12 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-          var onClickPreventDefault = function (evt) {
-            evt.preventDefault();
-            mapPinMain.removeEventListener('click', onClickPreventDefault)
-          };
-          mapPinMain.addEventListener('click', onClickPreventDefault);
-        }
+        var onClickPreventDefault = function (evt) {
+          evt.preventDefault();
+          mapPinMain.removeEventListener('click', onClickPreventDefault);
+        };
+        mapPinMain.addEventListener('click', onClickPreventDefault);
+      }
     };
 
     document.addEventListener('mousemove', onMouseMove);
@@ -102,7 +102,7 @@
     formElement.disabled = false;
   };
 
-  mapPinMain.addEventListener('mouseup', function() {
+  mapPinMain.addEventListener('mouseup', function () {
     activateCard();
 
     sectionMap.classList.remove('map--faded');
@@ -110,15 +110,15 @@
     var form = document.querySelector('.ad-form');
     form.classList.remove('ad-form--disabled');
 
-    window.backend.load(function(advertisements) {
+    window.backend.load(function (advertisements) {
       window.renderPins(advertisements);
       window.map.originalAds = advertisements;
-    })
+    });
 
-    var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH/2);
+    var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH / 2);
     var yActivePin = mapPinMain.offsetTop + ACTIVEPIN_HEIGHT;
     window.calculateAddress(xActivePin, yActivePin);
-    })
+  });
 
   var addAdsClickHandler = function (icon, advertisement) {
     icon.addEventListener('click', function () {
@@ -129,9 +129,9 @@
 
   var removePins = function () {
     var pins = document.querySelectorAll('.map__pin');
-    pins.forEach(function(pin) {
+    pins.forEach(function (pin) {
       pin.remove();
-    })
+    });
   };
 
   var closeCard = function () {
@@ -140,14 +140,14 @@
     if (mapCard) {
       mapCard.remove();
     }
-  }
+  };
 
   window.map = {
-    addAdsClickHandler : addAdsClickHandler,
-    disabledMap : disabledMap,
-    address : address,
-    removePins : removePins,
-    closeCard : closeCard,
+    addAdsClickHandler: addAdsClickHandler,
+    disabledMap: disabledMap,
+    address: address,
+    removePins: removePins,
+    closeCard: closeCard,
     sectionMap: sectionMap
-  }
+  };
 })();
