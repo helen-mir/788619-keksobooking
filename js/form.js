@@ -51,7 +51,8 @@
     } else if (timeinInput.value === '12:00') {
       timeoutInput.value = '12:00';
     }
-  })
+  });
+
   // отлавливание события выбора времени выезда
   timeoutInput.addEventListener('change', function () {
     // изменение времени въезда
@@ -81,17 +82,17 @@
       }
     } else if (roomNumberInput.value === '2') {
       if (capacityInput.value === '3' || capacityInput.value === '0') {
-        capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»');
+      capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»');
         }
     } else if (roomNumberInput.value === '3') {
       if (capacityInput.value === '0') {
-        capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»');
+      capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»');
         }
     } else if (roomNumberInput.value === '100') {
-        if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
-          capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"');
-        }
+      if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
+      capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"');
       }
+    }
   };
 
   var calculateAddress = function (x, y) {
@@ -151,7 +152,7 @@
   resetButton.addEventListener('click', function () {
     form.reset();
     window.map.disabledMap();
-    sectionMap.classList.add('map--faded');
+    window.map.sectionMap.classList.add('map--faded');
   });
 
   window.calculateAddress = calculateAddress;
