@@ -82,15 +82,15 @@
       }
     } else if (roomNumberInput.value === '2') {
       if (capacityInput.value === '3' || capacityInput.value === '0') {
-      capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»');
-        }
+        capacityInput.setCustomValidity('для 2х комнат доступены варианты "«для 2 гостей» или «для 1 гостя»');
+      }
     } else if (roomNumberInput.value === '3') {
       if (capacityInput.value === '0') {
-      capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»');
-        }
+        capacityInput.setCustomValidity('для 3х комнат доступены варианты «для 3 гостей», «для 2 гостей» или «для 1 гостя»');
+      }
     } else if (roomNumberInput.value === '100') {
       if (capacityInput.value === '3' || capacityInput.value === '2' || capacityInput.value === '1') {
-      capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"');
+        capacityInput.setCustomValidity('для 100 комнат доступен только вариант "не для гостей"');
       }
     }
   };
@@ -140,7 +140,7 @@
         form.reset();
         window.map.disabledMap();
         showSuccessMessage();
-      }, function() {
+      }, function () {
         showErrorMessage();
       });
       } else {
