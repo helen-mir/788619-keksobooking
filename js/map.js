@@ -32,13 +32,12 @@
     form.reset();
     sectionMap.classList.add('map--faded');
     form.classList.add('ad-form--disabled');
+    removePins();
 
     window.calculateAddress(xPin, yPin);
     mapPinMain.style.top = PIN_MAIN_TOP + 'px';
     mapPinMain.style.left = PIN_MAIN_LEFT + 'px';
   };
-
-  disabledMap();
 
   // активное состояние
   // реализация перемещения метки
@@ -159,6 +158,8 @@
       mapCard.remove();
     }
   };
+
+  disabledMap();
 
   window.map = {
     addAdsClickHandler: addAdsClickHandler,
