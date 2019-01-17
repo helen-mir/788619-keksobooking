@@ -105,9 +105,9 @@
   var templateSuccess = document.querySelector('#success').content.querySelector('.success');
   var templateError = document.querySelector('#error').content.querySelector('.error');
 
-  var onCloseEsc = function (evt) {
+  var onCloseEsc = function (evt, element) {
     if (evt.keyCode === window.data.ESC_KEYCODE) {
-      mainSection.removeChild(mainSection.lastElementChild);
+      mainSection.removeChild(element);
       document.removeEventListener('keydown', onCloseEsc);
     }
   };
@@ -117,7 +117,10 @@
 
     mainSection.insertBefore(successMessage, notice);
 
-    document.addEventListener('keydown', onCloseEsc);
+    document.addEventListener('keydown', function (evt) {
+      var element = mainSection.querySelector('.success');
+      onCloseEsc(evt, element);
+    });
   };
 
   var showErrorMessage = function () {
@@ -125,7 +128,10 @@
 
     mainSection.insertBefore(errorMessage, notice);
 
-    document.addEventListener('keydown', onCloseEsc);
+    document.addEventListener('keydown', function (evt) {
+      var element = mainSection.querySelector('.error');
+      onCloseEsc(evt, element);
+    });
   };
 
   var form = document.querySelector('.ad-form');

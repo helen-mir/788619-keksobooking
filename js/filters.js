@@ -27,11 +27,7 @@
   };
 
   var selectType = function (ad) {
-    if (housingType.value !== 'any') {
-      return ad.offer.type === housingType.value;
-    }
-
-    return true;
+    return housingType.value === 'any' || ad.offer.type === housingType.value;
   };
 
   var selectPrice = function (ad) {
@@ -51,11 +47,7 @@
   };
 
   var selectRooms = function (ad) {
-    if (housingRooms.value !== 'any') {
-      return ad.offer.rooms === parseInt(housingRooms.value, 10);
-    }
-
-    return true;
+    return housingRooms.value === 'any' || ad.offer.rooms === parseInt(housingRooms.value, 10);
   };
 
   var selectGuests = function (ad) {
@@ -73,13 +65,10 @@
     });
 
     var isCheckedItem = function (element) {
-      if (ad.offer.features.indexOf(element.value) === -1) {
-        return false;
-      }
-      return true;
+      return ad.offer.features.indexOf(element.value) === -1;
     };
 
-    checkedFeatures.every(isCheckedItem);
+    return checkedFeatures.every(isCheckedItem);
   };
 
   var onFilterChange = function () {

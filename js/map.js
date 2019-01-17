@@ -110,20 +110,23 @@
     });
   };
 
-  var setMainPinPosition = function () {
+  var activateForm = function () {
     if (form.classList.contains('ad-form--disabled')) {
       activateMap();
       sectionMap.classList.remove('map--faded');
       form.classList.remove('ad-form--disabled');
+      window.renderPins(window.map.originalAds);
     }
+  };
 
+  var setMainPinPosition = function () {
     if (!window.map.originalAds) {
       window.backend.load(function (advertisements) {
-        window.renderPins(advertisements);
         window.map.originalAds = advertisements;
+        activateForm();
       });
     } else {
-      window.renderPins(window.map.originalAds);
+      activateForm();
     }
 
     var xActivePin = mapPinMain.offsetLeft + (ACTIVEPIN_WIDTH / 2);
