@@ -128,7 +128,7 @@
 
     mainSection.insertBefore(errorMessage, notice);
 
-    document.addEventListener('keydown', function () {
+    document.addEventListener('keydown', function (evt) {
       var element = mainSection.querySelector('.error');
       onCloseEsc(evt, element);
     });

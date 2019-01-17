@@ -110,7 +110,7 @@
     });
   };
 
-  var activateForm = function() {
+  var activateForm = function () {
     if (form.classList.contains('ad-form--disabled')) {
       activateMap();
       sectionMap.classList.remove('map--faded');
