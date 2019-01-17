@@ -29,6 +29,10 @@
       item.disabled = true;
     });
 
+    form.reset();
+    sectionMap.classList.add('map--faded');
+    form.classList.add('ad-form--disabled');
+
     window.calculateAddress(xPin, yPin);
     mapPinMain.style.top = PIN_MAIN_TOP + 'px';
     mapPinMain.style.left = PIN_MAIN_LEFT + 'px';

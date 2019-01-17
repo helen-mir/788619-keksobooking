@@ -157,10 +157,7 @@
 
   var resetButton = document.querySelector('.ad-form__reset');
   resetButton.addEventListener('click', function () {
-    form.reset();
     window.map.disabledMap();
-    window.map.sectionMap.classList.add('map--faded');
-    form.classList.add('ad-form--disabled');
     window.map.removePins();
     window.map.closeCard();
   });
